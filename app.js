@@ -1,21 +1,17 @@
 const ARC_LINKS = {
-  tetris: "#",
-  damas: "#"
+  tetris: "https://www.scad.mx/arc-tetris",
+  damas: "https://www.scad.mx/arc-damas",
+  acceso: "https://www.scad.mx/arc-acceso"
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-game]").forEach((button) => {
     const game = button.dataset.game;
-    const url = ARC_LINKS[game] || "#";
+    const url = ARC_LINKS[game];
 
-    button.setAttribute("href", url);
-
-    button.addEventListener("click", (event) => {
-      if (url === "#") {
-        event.preventDefault();
-        alert("Liga pendiente de configurar.");
-      }
-    });
+    if (url) {
+      button.setAttribute("href", url);
+    }
   });
 
   if ("serviceWorker" in navigator) {
