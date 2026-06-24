@@ -1,11 +1,12 @@
-const CACHE_NAME = "arcade-pwa-v1";
+const CACHE_NAME = "arcade-pwa-v2";
 
 const APP_FILES = [
   "./",
   "index.html",
   "styles.css",
   "app.js",
-  "manifest.json"
+  "manifest.json",
+  "assets/img-arcade.png"
 ];
 
 self.addEventListener("install", (event) => {
