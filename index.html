@@ -4,42 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>ARCADE</title>
+  <title>ARCADE | SCaD</title>
 
   <link rel="stylesheet" href="styles.css" />
   <link rel="manifest" href="manifest.json" />
 
-  <meta name="theme-color" content="#111827" />
+  <meta name="theme-color" content="#020617" />
 </head>
 
 <body>
   <main class="arcade-app">
-    <header class="arcade-header">
-      <div>
+    <header class="arcade-topbar">
+      <div class="brand-block">
+        <span class="brand-kicker">SCaD</span>
         <h1>ARCADE</h1>
         <p>Portal de juegos</p>
       </div>
 
-      <span class="arcade-version">PWA</span>
+      <div class="top-actions">
+        <span class="pwa-chip">PWA</span>
+        <a class="login-link" href="https://www.scad.mx/arc-acceso">Iniciar sesión</a>
+      </div>
     </header>
 
-    <section class="arcade-grid" aria-label="Juegos disponibles">
-      <article class="game-card">
+    <section class="status-card">
+      <div class="status-orb">◎</div>
+      <div>
+        <h2>Acceso a sala</h2>
+        <p>Selecciona un juego para entrar a la experiencia ARCADE.</p>
+      </div>
+    </section>
+
+    <section class="game-grid" aria-label="Juegos disponibles">
+      <article class="game-card game-tetris">
+        <div class="game-glow"></div>
+
         <div class="game-icon">▦</div>
-        <div class="game-info">
+
+        <div class="game-content">
+          <span class="game-label">Bloques / reflejos</span>
           <h2>Tetris</h2>
-          <p>Juego clásico de bloques.</p>
+          <p>Velocidad, líneas y precisión en modo clásico.</p>
         </div>
-        <a class="game-button" href="#" data-game="tetris">Entrar</a>
+
+        <a class="game-button" href="https://www.scad.mx/arc-tetris" data-game="tetris">
+          Jugar
+        </a>
       </article>
 
-      <article class="game-card">
+      <article class="game-card game-damas">
+        <div class="game-glow"></div>
+
         <div class="game-icon">◼</div>
-        <div class="game-info">
+
+        <div class="game-content">
+          <span class="game-label">Tablero / estrategia</span>
           <h2>Damas</h2>
-          <p>Juego clásico de tablero.</p>
+          <p>Movimiento táctico y captura en tablero clásico.</p>
         </div>
-        <a class="game-button" href="#" data-game="damas">Entrar</a>
+
+        <a class="game-button" href="https://www.scad.mx/arc-damas" data-game="damas">
+          Jugar
+        </a>
       </article>
     </section>
 
