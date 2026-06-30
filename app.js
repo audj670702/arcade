@@ -1,13 +1,25 @@
+// ARCADE / App
+// Versión técnica: v1.4.3
+// Alcance: links de juegos + estado visual login/logout + instalación PWA
+
 const ARC_LINKS = {
   tetris: "https://www.scad.mx/arc-tetris",
   damas: "https://www.scad.mx/arc-damas",
   fb: "https://www.scad.mx/arc-fb",
-  acceso: "https://www.scad.mx/arc-acceso"
+  acceso: "https://www.scad.mx/arc-acceso",
+  logout: "https://www.scad.mx/arc-acceso?logout=1"
 };
 
 let deferredInstallPrompt = null;
 
 document.addEventListener("DOMContentLoaded", () => {
+  configurarLinksArcade();
+  actualizarEstadoSesionArcade();
+  configurarInstalacionArcade();
+  registrarServiceWorker();
+});
+
+function configurarLinksArcade() {
   document.querySelectorAll("[data-game]").forEach((button) => {
     const game = button.dataset.game;
     const url = ARC_LINKS[game];
@@ -16,10 +28,42 @@ document.addEventListener("DOMContentLoaded", () => {
       button.setAttribute("href", url);
     }
   });
+}
 
-  configurarInstalacionArcade();
-  registrarServiceWorker();
-});
+function actualizarEstadoSesionArcade() {
+  const params = new URLSearchParams(window.location.search);
+  const login = params.get("login");
+  const logout = params.get("logout");
+
+  if (login === "1") {
+    localStorage.setItem("arcadeSesionActiva", "1");
+    limpiarParametrosUrl();
+  }
+
+  if (logout === "1") {
+    localStorage.removeItem("arcadeSesionActiva");
+    limpiarParametrosUrl();
+  }
+
+  const sesionActiva = localStorage.getItem("arcadeSesionActiva") === "1";
+
+  document.querySelectorAll('[data-game="acceso"]').forEach((button) => {
+    if (sesionActiva) {
+      button.textContent = "Cerrar sesión";
+      button.setAttribute("href", ARC_LINKS.logout);
+      button.setAttribute("data-session-action", "logout");
+    } else {
+      button.textContent = "Iniciar sesión";
+      button.setAttribute("href", ARC_LINKS.acceso);
+      button.setAttribute("data-session-action", "login");
+    }
+  });
+}
+
+function limpiarParametrosUrl() {
+  const cleanUrl = `${window.location.origin}${window.location.pathname}`;
+  window.history.replaceState({}, document.title, cleanUrl);
+}
 
 function registrarServiceWorker() {
   if (!("serviceWorker" in navigator)) return;
