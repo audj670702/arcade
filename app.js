@@ -1,6 +1,7 @@
 const ARC_LINKS = {
   tetris: "https://www.scad.mx/arc-tetris",
   damas: "https://www.scad.mx/arc-damas",
+  fb: "https://www.scad.mx/arc-fb",
   acceso: "https://www.scad.mx/arc-acceso"
 };
 
