@@ -51,7 +51,10 @@ body {
   gap: 14px;
 }
 
+/* TOPBAR */
+
 .arcade-topbar {
+  width: 100%;
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -61,7 +64,9 @@ body {
   border-radius: 22px;
   padding: 18px;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
+  align-items: flex-start;
   gap: 14px;
   box-shadow:
     0 18px 40px rgba(0, 0, 0, 0.45),
@@ -71,7 +76,8 @@ body {
 .arcade-topbar::after {
   content: "";
   position: absolute;
-  inset: auto -30px -48px auto;
+  right: -30px;
+  bottom: -48px;
   width: 150px;
   height: 150px;
   background: radial-gradient(circle, rgba(244, 114, 182, 0.34), transparent 65%);
@@ -81,6 +87,7 @@ body {
 .brand-block {
   position: relative;
   z-index: 1;
+  min-width: 0;
 }
 
 .brand-kicker {
@@ -108,13 +115,24 @@ body {
   font-size: 0.9rem;
 }
 
+.arcade-version {
+  display: block;
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1;
+  color: rgba(148, 163, 184, 0.68);
+  letter-spacing: 0.02em;
+}
+
 .top-actions {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 8px;
+  flex: 0 0 auto;
 }
 
 .pwa-chip {
@@ -128,6 +146,29 @@ body {
   letter-spacing: 0.06em;
 }
 
+.fb-mini-access {
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  background: #1877f2;
+  color: #ffffff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 8px 20px rgba(24, 119, 242, 0.22);
+}
+
+.fb-mini-access:active {
+  transform: scale(0.96);
+}
+
 .login-link {
   color: #ffffff;
   font-size: 0.78rem;
@@ -136,13 +177,17 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.75);
 }
 
+/* CARDS */
+
 .game-grid {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 13px;
 }
 
 .game-card {
+  width: 100%;
   position: relative;
   overflow: hidden;
   border: 1px solid var(--line);
@@ -279,7 +324,10 @@ body {
   transform: scale(0.985);
 }
 
+/* FOOTER */
+
 .arcade-footer {
+  width: 100%;
   margin-top: auto;
   text-align: center;
   color: rgba(255, 255, 255, 0.72);
@@ -287,129 +335,30 @@ body {
   padding-top: 6px;
 }
 
+/* DESKTOP */
+
 @media (min-width: 640px) {
   .arcade-app {
     padding-top: 22px;
   }
 }
 
-.arcade-version{
-  display:block;
-  margin-top:4px;
-  font-size:11px;
-  font-weight:400;
-  line-height:1;
-  color:rgba(148,163,184,.68);
-  letter-spacing:.02em;
-}
+/* MOBILE FINO */
 
-.fb-mini-access{
-  width:42px;
-  height:42px;
-  min-width:42px;
-  min-height:42px;
-  flex:0 0 42px;
-  margin:0;
-  border-radius:10px;
-  display:flex !important;
-  align-items:center;
-  justify-content:center;
-  text-decoration:none;
-  background:#1877F2;
-  color:#fff;
-  font-family:Arial, Helvetica, sans-serif;
-  font-size:28px;
-  font-weight:900;
-  line-height:1;
-  box-shadow:0 8px 20px rgba(24,119,242,.22);
-  position:relative;
-  z-index:5;
-  visibility:visible !important;
-  opacity:1 !important;
-}
+@media (max-width: 360px) {
+  .arcade-topbar {
+    padding: 16px;
+  }
 
-.fb-mini-access:active{
-  transform:scale(.96);
-}
+  .arcade-topbar h1 {
+    font-size: 2rem;
+  }
 
-/* =========================================================
-   FIX LAYOUT ARCADE v1.2
-   Fuerza estructura vertical correcta
-   ========================================================= */
-
-body {
-  display: flex !important;
-  justify-content: center !important;
-  align-items: stretch !important;
-}
-
-.arcade-app {
-  width: 100% !important;
-  max-width: 540px !important;
-  min-height: 100vh !important;
-  padding: 14px 14px 22px !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 14px !important;
-}
-
-.arcade-topbar {
-  width: 100% !important;
-  min-height: auto !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-start !important;
-  justify-content: space-between !important;
-}
-
-.brand-block {
-  width: auto !important;
-  min-width: 0 !important;
-}
-
-.top-actions {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-end !important;
-  justify-content: flex-start !important;
-  gap: 8px !important;
-  flex: 0 0 auto !important;
-}
-
-.game-grid {
-  width: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 13px !important;
-}
-
-.game-card {
-  width: 100% !important;
-  min-width: 0 !important;
-  display: grid !important;
-  grid-template-columns: 48px 1fr !important;
-  grid-template-areas:
-    "icon content"
-    "button button" !important;
-}
-
-.arcade-footer {
-  width: 100% !important;
-  margin-top: auto !important;
-  text-align: center !important;
-}
-
-.fb-mini-access {
-  width: 42px !important;
-  height: 42px !important;
-  min-width: 42px !important;
-  min-height: 42px !important;
-  flex: 0 0 42px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-  position: relative !important;
-  z-index: 20 !important;
+  .fb-mini-access {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    font-size: 25px;
+  }
 }
