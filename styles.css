@@ -136,44 +136,6 @@ body {
   border-bottom: 1px solid rgba(255, 255, 255, 0.75);
 }
 
-.status-card {
-  border: 1px solid var(--line);
-  background: rgba(5, 10, 24, 0.72);
-  backdrop-filter: blur(10px);
-  border-radius: 18px;
-  padding: 12px 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.status-orb {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--cyan);
-  background:
-    radial-gradient(circle at top, rgba(34, 211, 238, 0.28), rgba(15, 23, 42, 0.8));
-  border: 1px solid rgba(34, 211, 238, 0.45);
-  box-shadow: 0 0 18px rgba(34, 211, 238, 0.18);
-  font-weight: 900;
-}
-
-.status-card h2 {
-  margin: 0;
-  font-size: 1rem;
-}
-
-.status-card p {
-  margin: 3px 0 0;
-  color: var(--muted);
-  font-size: 0.78rem;
-}
-
 .game-grid {
   display: flex;
   flex-direction: column;
@@ -344,8 +306,12 @@ body {
 .fb-mini-access{
   width:42px;
   height:42px;
-  margin-top:10px;
+  min-width:42px;
+  min-height:42px;
+  align-self:flex-start;
+  margin-top:18px;
   margin-left:4px;
+  margin-bottom:8px;
   border-radius:10px;
   display:flex;
   align-items:center;
