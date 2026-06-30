@@ -308,12 +308,10 @@ body {
   height:42px;
   min-width:42px;
   min-height:42px;
-  align-self:flex-start;
-  margin-top:18px;
-  margin-left:4px;
-  margin-bottom:8px;
+  flex:0 0 42px;
+  margin:0;
   border-radius:10px;
-  display:flex;
+  display:flex !important;
   align-items:center;
   justify-content:center;
   text-decoration:none;
@@ -324,6 +322,10 @@ body {
   font-weight:900;
   line-height:1;
   box-shadow:0 8px 20px rgba(24,119,242,.22);
+  position:relative;
+  z-index:5;
+  visibility:visible !important;
+  opacity:1 !important;
 }
 
 .fb-mini-access:active{
