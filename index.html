@@ -6,10 +6,13 @@
 
   <title>ARCADE | SCaD</title>
 
-  <link rel="stylesheet" href="styles.css?v=14" />
+  <link rel="stylesheet" href="styles.css?v=15" />
   <link rel="manifest" href="manifest.json" />
 
   <meta name="theme-color" content="#020617" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ARCADE" />
 </head>
 
 <body>
@@ -19,10 +22,18 @@
         <span class="brand-kicker">SCaD</span>
         <h1>ARCADE</h1>
         <p>Portal de juegos</p>
-        <span class="arcade-version">v.1.4</span>
+        <span class="arcade-version">v.1.5</span>
       </div>
 
       <div class="top-actions">
+        <button id="btnInstallArcade" class="install-btn" type="button" hidden>
+          Instalar app
+        </button>
+
+        <span id="installStatus" class="install-status" hidden>
+          App instalada
+        </span>
+
         <span class="pwa-chip">PWA</span>
 
         <a class="fb-mini-access" href="https://www.scad.mx/arc-fb" aria-label="Facebook ARCADE">
@@ -74,6 +85,18 @@
     </footer>
   </main>
 
-  <script src="app.js?v=14"></script>
+  <div id="installHelp" class="install-help hidden" role="dialog" aria-modal="true">
+    <div class="install-help-card">
+      <h2>Instalar ARCADE</h2>
+      <p id="installHelpText">
+        Para instalar ARCADE, abre las opciones del navegador y selecciona “Agregar a pantalla de inicio”.
+      </p>
+      <button id="btnCloseInstallHelp" type="button">
+        Entendido
+      </button>
+    </div>
+  </div>
+
+  <script src="app.js?v=15"></script>
 </body>
 </html>
