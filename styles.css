@@ -331,3 +331,85 @@ body {
 .fb-mini-access:active{
   transform:scale(.96);
 }
+
+/* =========================================================
+   FIX LAYOUT ARCADE v1.2
+   Fuerza estructura vertical correcta
+   ========================================================= */
+
+body {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: stretch !important;
+}
+
+.arcade-app {
+  width: 100% !important;
+  max-width: 540px !important;
+  min-height: 100vh !important;
+  padding: 14px 14px 22px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+}
+
+.arcade-topbar {
+  width: 100% !important;
+  min-height: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  justify-content: space-between !important;
+}
+
+.brand-block {
+  width: auto !important;
+  min-width: 0 !important;
+}
+
+.top-actions {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-end !important;
+  justify-content: flex-start !important;
+  gap: 8px !important;
+  flex: 0 0 auto !important;
+}
+
+.game-grid {
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 13px !important;
+}
+
+.game-card {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: grid !important;
+  grid-template-columns: 48px 1fr !important;
+  grid-template-areas:
+    "icon content"
+    "button button" !important;
+}
+
+.arcade-footer {
+  width: 100% !important;
+  margin-top: auto !important;
+  text-align: center !important;
+}
+
+.fb-mini-access {
+  width: 42px !important;
+  height: 42px !important;
+  min-width: 42px !important;
+  min-height: 42px !important;
+  flex: 0 0 42px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: relative !important;
+  z-index: 20 !important;
+}
