@@ -1,4 +1,4 @@
-const CACHE_NAME = "arcade-pwa-v2";
+const CACHE_NAME = "arcade-pwa-v3";
 
 const APP_FILES = [
   "./",
@@ -6,13 +6,16 @@ const APP_FILES = [
   "styles.css",
   "app.js",
   "manifest.json",
-  "assets/img-arcade.png"
+  "assets/img-arcade.png",
+  "assets/icon-192.png",
+  "assets/icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_FILES))
   );
+
   self.skipWaiting();
 });
 
@@ -26,6 +29,7 @@ self.addEventListener("activate", (event) => {
       )
     )
   );
+
   self.clients.claim();
 });
 
