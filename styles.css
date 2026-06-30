@@ -1,10 +1,14 @@
 :root {
   --bg: #020617;
-  --line: rgba(255,255,255,.16);
+  --panel: rgba(8, 13, 31, 0.78);
+  --panel-strong: rgba(10, 16, 36, 0.92);
+  --line: rgba(255, 255, 255, 0.16);
   --text: #f9fafb;
   --muted: #b7c0d8;
   --cyan: #22d3ee;
   --pink: #f472b6;
+  --violet: #a855f7;
+  --blue: #60a5fa;
 }
 
 * {
@@ -14,7 +18,6 @@
 html,
 body {
   margin: 0;
-  width: 100%;
   min-height: 100%;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--text);
@@ -26,83 +29,58 @@ body {
   background-image:
     linear-gradient(
       180deg,
-      rgba(2,6,23,.10),
-      rgba(2,6,23,.42) 42%,
-      rgba(2,6,23,.78)
+      rgba(2, 6, 23, 0.10),
+      rgba(2, 6, 23, 0.38) 40%,
+      rgba(2, 6, 23, 0.70)
     ),
     url("assets/img-arcade.png");
   background-size: cover;
   background-position: center top;
   background-attachment: fixed;
-
-  display: flex !important;
-  justify-content: center !important;
-  align-items: stretch !important;
+  display: flex;
+  justify-content: center;
 }
-
-/* =========================
-   APP — FORZADO VERTICAL
-   ========================= */
 
 .arcade-app {
-  width: 100% !important;
-  max-width: 540px !important;
-  min-height: 100vh !important;
-
-  padding: 14px 14px 22px !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  justify-content: flex-start !important;
-  gap: 14px !important;
-
-  grid-template-columns: none !important;
-  grid-template-rows: none !important;
+  width: 100%;
+  max-width: 540px;
+  min-height: 100vh;
+  padding: 12px 10px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-/* =========================
-   TOPBAR
-   ========================= */
+/* TOPBAR */
 
 .arcade-topbar {
-  width: 100% !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-
-  position: relative !important;
-  overflow: hidden !important;
-
+  width: 100%;
+  position: relative;
+  overflow: hidden;
   border: 1px solid var(--line);
+  background:
+    linear-gradient(145deg, rgba(9, 14, 33, 0.95), rgba(4, 8, 20, 0.86)),
+    radial-gradient(circle at top left, rgba(34, 211, 238, 0.25), transparent 40%);
   border-radius: 22px;
   padding: 18px;
-
-  background:
-    linear-gradient(145deg, rgba(9,14,33,.95), rgba(4,8,20,.86)),
-    radial-gradient(circle at top left, rgba(34,211,238,.25), transparent 40%);
-
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 14px;
   box-shadow:
-    0 18px 40px rgba(0,0,0,.45),
-    0 0 24px rgba(34,211,238,.13);
-
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: flex-start !important;
-  justify-content: space-between !important;
-  gap: 12px !important;
-
-  grid-column: auto !important;
-  grid-row: auto !important;
+    0 18px 40px rgba(0, 0, 0, 0.45),
+    0 0 24px rgba(34, 211, 238, 0.13);
 }
 
 .arcade-topbar::after {
   content: "";
   position: absolute;
-  right: -36px;
-  bottom: -54px;
+  right: -30px;
+  bottom: -48px;
   width: 150px;
   height: 150px;
-  background: radial-gradient(circle, rgba(244,114,182,.34), transparent 65%);
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.34), transparent 65%);
   pointer-events: none;
 }
 
@@ -111,31 +89,35 @@ body {
   z-index: 1;
   min-width: 0;
   flex: 1 1 auto;
+  padding-right: 10px;
 }
 
 .brand-kicker {
   display: inline-flex;
   margin-bottom: 8px;
-  font-size: .68rem;
-  letter-spacing: .18em;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
   color: var(--cyan);
   font-weight: 800;
 }
 
 .arcade-topbar h1 {
   margin: 0;
-  font-size: 2.18rem;
-  line-height: .92;
-  letter-spacing: .07em;
+  max-width: 100%;
+  font-size: clamp(2rem, 9vw, 2.55rem);
+  line-height: 0.92;
+  letter-spacing: 0.06em;
+  word-break: keep-all;
+  white-space: nowrap;
   text-shadow:
-    0 0 10px rgba(34,211,238,.55),
-    0 0 24px rgba(168,85,247,.38);
+    0 0 10px rgba(34, 211, 238, 0.55),
+    0 0 24px rgba(168, 85, 247, 0.38);
 }
 
 .arcade-topbar p {
   margin: 10px 0 0;
   color: var(--muted);
-  font-size: .88rem;
+  font-size: 0.9rem;
 }
 
 .arcade-version {
@@ -144,109 +126,88 @@ body {
   font-size: 11px;
   font-weight: 400;
   line-height: 1;
-  color: rgba(148,163,184,.72);
+  color: rgba(148, 163, 184, 0.68);
+  letter-spacing: 0.02em;
 }
 
 .top-actions {
   position: relative;
   z-index: 2;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: flex-end !important;
-  justify-content: flex-start !important;
-  gap: 8px !important;
-
-  flex: 0 0 auto !important;
-  min-width: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  flex: 0 0 auto;
 }
 
 .pwa-chip {
-  border: 1px solid rgba(34,211,238,.55);
+  border: 1px solid rgba(34, 211, 238, 0.55);
   color: #e0faff;
-  background: rgba(34,211,238,.12);
+  background: rgba(34, 211, 238, 0.12);
   border-radius: 999px;
   padding: 5px 9px;
-  font-size: .68rem;
+  font-size: 0.68rem;
   font-weight: 800;
-  letter-spacing: .06em;
+  letter-spacing: 0.06em;
 }
 
 .fb-mini-access {
-  width: 42px !important;
-  height: 42px !important;
-  min-width: 42px !important;
-  min-height: 42px !important;
-
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+  min-height: 42px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-decoration: none;
-
   background: #1877f2;
-  color: #fff;
-
+  color: #ffffff;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 28px;
   font-weight: 900;
   line-height: 1;
+  box-shadow: 0 8px 20px rgba(24, 119, 242, 0.22);
+}
 
-  box-shadow: 0 8px 20px rgba(24,119,242,.24);
-
-  visibility: visible !important;
-  opacity: 1 !important;
+.fb-mini-access:active {
+  transform: scale(0.96);
 }
 
 .login-link {
-  color: #fff;
-  font-size: .74rem;
+  color: #ffffff;
+  font-size: 0.78rem;
   font-weight: 800;
   text-decoration: none;
-  border-bottom: 1px solid rgba(255,255,255,.75);
-  white-space: nowrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.75);
 }
 
-/* =========================
-   TARJETAS
-   ========================= */
+/* CARDS */
 
 .game-grid {
-  width: 100% !important;
-
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: stretch !important;
-  gap: 13px !important;
-
-  grid-column: auto !important;
-  grid-row: auto !important;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 13px;
 }
 
 .game-card {
-  width: 100% !important;
-  min-width: 0 !important;
-
+  width: 100%;
   position: relative;
   overflow: hidden;
-
   border: 1px solid var(--line);
+  background:
+    linear-gradient(145deg, rgba(8, 13, 31, 0.90), rgba(5, 9, 22, 0.76));
+  backdrop-filter: blur(12px);
   border-radius: 22px;
   padding: 15px;
-
-  background:
-    linear-gradient(145deg, rgba(8,13,31,.90), rgba(5,9,22,.76));
-
-  box-shadow: 0 18px 38px rgba(0,0,0,.34);
-  backdrop-filter: blur(12px);
-
-  display: grid !important;
-  grid-template-columns: 48px 1fr !important;
+  display: grid;
+  grid-template-columns: 48px 1fr;
   grid-template-areas:
     "icon content"
-    "button button" !important;
-  gap: 12px !important;
+    "button button";
+  gap: 12px;
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.34);
 }
 
 .game-card::before {
@@ -254,15 +215,15 @@ body {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(90deg, rgba(34,211,238,.20), transparent 42%),
-    linear-gradient(180deg, rgba(255,255,255,.07), transparent 48%);
+    linear-gradient(90deg, rgba(34, 211, 238, 0.20), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 48%);
   pointer-events: none;
 }
 
 .game-damas::before {
   background:
-    linear-gradient(90deg, rgba(244,114,182,.22), transparent 42%),
-    linear-gradient(180deg, rgba(255,255,255,.07), transparent 48%);
+    linear-gradient(90deg, rgba(244, 114, 182, 0.22), transparent 42%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), transparent 48%);
 }
 
 .game-glow {
@@ -272,34 +233,28 @@ body {
   right: -70px;
   top: -70px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(34,211,238,.35), transparent 66%);
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.35), transparent 66%);
 }
 
 .game-damas .game-glow {
-  background: radial-gradient(circle, rgba(244,114,182,.34), transparent 66%);
+  background: radial-gradient(circle, rgba(244, 114, 182, 0.34), transparent 66%);
 }
 
 .game-icon {
   position: relative;
   z-index: 1;
-
   grid-area: icon;
-
   width: 48px;
   height: 48px;
   border-radius: 16px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   color: #ecfeff;
   background:
-    radial-gradient(circle at top, rgba(34,211,238,.36), rgba(15,23,42,.90));
-
-  border: 1px solid rgba(34,211,238,.50);
-  box-shadow: 0 0 18px rgba(34,211,238,.22);
-
+    radial-gradient(circle at top, rgba(34, 211, 238, 0.36), rgba(15, 23, 42, 0.90));
+  border: 1px solid rgba(34, 211, 238, 0.50);
+  box-shadow: 0 0 18px rgba(34, 211, 238, 0.22);
   font-size: 1.45rem;
   font-weight: 900;
 }
@@ -307,9 +262,9 @@ body {
 .game-damas .game-icon {
   color: #fff1f8;
   background:
-    radial-gradient(circle at top, rgba(244,114,182,.38), rgba(15,23,42,.90));
-  border-color: rgba(244,114,182,.56);
-  box-shadow: 0 0 18px rgba(244,114,182,.22);
+    radial-gradient(circle at top, rgba(244, 114, 182, 0.38), rgba(15, 23, 42, 0.90));
+  border-color: rgba(244, 114, 182, 0.56);
+  box-shadow: 0 0 18px rgba(244, 114, 182, 0.22);
 }
 
 .game-content {
@@ -322,9 +277,9 @@ body {
 .game-label {
   display: block;
   color: var(--cyan);
-  font-size: .66rem;
+  font-size: 0.66rem;
   font-weight: 900;
-  letter-spacing: .12em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   margin-bottom: 4px;
 }
@@ -342,89 +297,89 @@ body {
 .game-content p {
   margin: 6px 0 0;
   color: var(--muted);
-  font-size: .82rem;
+  font-size: 0.82rem;
   line-height: 1.35;
 }
 
 .game-button {
   position: relative;
   z-index: 1;
-
   grid-area: button;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   min-height: 42px;
   margin-top: 2px;
   border-radius: 999px;
-
   color: #031018;
   background: linear-gradient(135deg, #67e8f9, #22d3ee);
-
   text-decoration: none;
-  font-size: .9rem;
+  font-size: 0.9rem;
   font-weight: 950;
-  letter-spacing: .04em;
-
-  box-shadow: 0 8px 24px rgba(34,211,238,.28);
+  letter-spacing: 0.04em;
+  box-shadow: 0 8px 24px rgba(34, 211, 238, 0.28);
 }
 
 .game-damas .game-button {
   color: #1d0612;
   background: linear-gradient(135deg, #f9a8d4, #f472b6);
-  box-shadow: 0 8px 24px rgba(244,114,182,.28);
+  box-shadow: 0 8px 24px rgba(244, 114, 182, 0.28);
 }
 
-/* =========================
-   FOOTER
-   ========================= */
+.game-button:active {
+  transform: scale(0.985);
+}
+
+/* FOOTER */
 
 .arcade-footer {
-  width: 100% !important;
-  margin-top: auto !important;
+  width: 100%;
+  margin-top: auto;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.74rem;
   padding-top: 6px;
-
-  text-align: center !important;
-  color: rgba(255,255,255,.72);
-  font-size: .74rem;
-
-  grid-column: auto !important;
-  grid-row: auto !important;
 }
 
-/* =========================
-   DESACTIVA CUALQUIER LAYOUT ANTERIOR
-   ========================= */
+/* DESKTOP / TABLET */
 
-@media (min-width: 1px) {
+@media (min-width: 520px) {
   .arcade-app {
-    display: flex !important;
-    flex-direction: column !important;
+    max-width: 540px;
+    padding: 12px 10px 18px;
   }
 
-  .arcade-topbar,
-  .game-grid,
-  .arcade-footer {
-    width: 100% !important;
+  .game-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .game-card {
+    min-height: 236px;
   }
 }
+
+/* MOBILE FINO */
 
 @media (max-width: 360px) {
+  .arcade-app {
+    padding: 12px 10px 18px;
+  }
+
   .arcade-topbar {
     padding: 16px;
   }
 
   .arcade-topbar h1 {
     font-size: 1.95rem;
+    letter-spacing: 0.04em;
   }
 
   .fb-mini-access {
-    width: 38px !important;
-    height: 38px !important;
-    min-width: 38px !important;
-    min-height: 38px !important;
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    min-height: 38px;
     font-size: 25px;
   }
 }
