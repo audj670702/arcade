@@ -1,14 +1,16 @@
 // ARCADE / App
-// Versión técnica: v1.4.3
-// Alcance: links de juegos + estado visual login/logout + instalación PWA
+// Versión técnica: v1.4.4
+// Alcance: links de juegos + bloqueo por sesión + estado visual login/logout + instalación PWA
 
 const ARC_LINKS = {
   tetris: "https://www.scad.mx/arc-tetris",
-  damas: "https://www.scad.mx/arc-damas",
+  damas: "https://www.scad.mx/arc-colores",
   fb: "https://www.scad.mx/arc-fb",
   acceso: "https://www.scad.mx/arc-acceso",
   logout: "https://www.scad.mx/arc-acceso?logout=1"
 };
+
+const ARC_MODULOS_REQUIEREN_SESION = ["tetris", "damas", "fb"];
 
 let deferredInstallPrompt = null;
 
@@ -58,7 +60,39 @@ function actualizarEstadoSesionArcade() {
       button.setAttribute("data-session-action", "login");
     }
   });
+
+  actualizarBloqueoModulosPorSesion(sesionActiva);
 }
+
+function actualizarBloqueoModulosPorSesion(sesionActiva) {
+  ARC_MODULOS_REQUIEREN_SESION.forEach((game) => {
+    document.querySelectorAll(`[data-game="${game}"]`).forEach((button) => {
+      if (sesionActiva) {
+        button.classList.remove("arc-disabled");
+        button.removeAttribute("aria-disabled");
+        button.removeAttribute("tabindex");
+
+        if (ARC_LINKS[game]) {
+          button.setAttribute("href", ARC_LINKS[game]);
+        }
+      } else {
+        button.classList.add("arc-disabled");
+        button.setAttribute("aria-disabled", "true");
+        button.setAttribute("tabindex", "-1");
+        button.removeAttribute("href");
+      }
+    });
+  });
+}
+
+document.addEventListener("click", (event) => {
+  const blockedButton = event.target.closest(".arc-disabled");
+
+  if (blockedButton) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+});
 
 function limpiarParametrosUrl() {
   const cleanUrl = `${window.location.origin}${window.location.pathname}`;
