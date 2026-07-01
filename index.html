@@ -1,276 +1,99 @@
-// ARCADE / App
-// Versión técnica: v1.5.2
-// Alcance: links de juegos + bloqueo real por sesión + estado visual login/logout + instalación PWA
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-const ARC_VERSION_VISIBLE = "v.1.5.3";
+  <title>ARCADE | SCaD</title>
 
-const ARC_LINKS = {
-  tetris: "https://www.scad.mx/arc-tetris",
-  damas: "https://www.scad.mx/arc-colores",
-  fb: "https://www.scad.mx/arc-fb",
-  acceso: "https://www.scad.mx/arc-acceso",
-  logout: "https://www.scad.mx/arc-acceso?logout=1"
-};
+  <link rel="stylesheet" href="styles.css?v=15" />
+  <link rel="manifest" href="manifest.json" />
 
-const ARC_MODULOS_REQUIEREN_SESION = ["tetris", "damas", "fb"];
+  <meta name="theme-color" content="#020617" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="ARCADE" />
+</head>
 
-let deferredInstallPrompt = null;
-let arcadeSesionActiva = false;
+<body>
+  <main class="arcade-app">
+    <header class="arcade-topbar">
+      <div class="brand-block">
+        <h1>ARCADE</h1>
+        <p>Portal de juegos</p>
+        <span class="arcade-version">v.1.5.3</span>
+      </div>
 
-document.addEventListener("DOMContentLoaded", () => {
-  actualizarVersionVisibleArcade();
-  configurarLinksArcade();
-  actualizarEstadoSesionArcade();
-  configurarBloqueoClickArcade();
-  configurarInstalacionArcade();
-  registrarServiceWorker();
-});
+      <div class="top-actions">
+        <button id="btnInstallArcade" class="install-btn" type="button" hidden>
+          Instalar app
+        </button>
 
-function actualizarVersionVisibleArcade() {
-  document.querySelectorAll(".arcade-version").forEach((version) => {
-    version.textContent = ARC_VERSION_VISIBLE;
-  });
-}
+        <span id="installStatus" class="install-status" hidden>
+          App instalada
+        </span>
 
-function configurarLinksArcade() {
-  document.querySelectorAll("[data-game]").forEach((button) => {
-    const game = button.dataset.game;
-    const url = ARC_LINKS[game];
+        <a class="fb-mini-access" href="https://www.scad.mx/arc-fb" aria-label="Facebook ARCADE">
+          f
+        </a>
 
-    if (url) {
-      button.setAttribute("href", url);
-    }
-  });
-}
+        <a class="login-link" href="https://www.scad.mx/arc-acceso" data-game="acceso">
+          Iniciar sesión
+        </a>
+      </div>
+    </header>
 
-function actualizarEstadoSesionArcade() {
-  const params = new URLSearchParams(window.location.search);
-  const login = params.get("login");
-  const logout = params.get("logout");
+    <section class="game-grid" aria-label="Juegos disponibles">
+      <article class="game-card game-tetris">
+        <div class="game-glow"></div>
 
-  if (login === "1") {
-    localStorage.setItem("arcadeSesionActiva", "1");
-    limpiarParametrosUrl();
-  }
+        <div class="game-icon">▦</div>
 
-  if (logout === "1") {
-    localStorage.removeItem("arcadeSesionActiva");
-    limpiarParametrosUrl();
-  }
+        <div class="game-content">
+          <span class="game-label">Bloques / reflejos</span>
+          <h2>Tetris</h2>
+          <p>Velocidad, líneas y precisión en modo clásico.</p>
+        </div>
 
-  arcadeSesionActiva = localStorage.getItem("arcadeSesionActiva") === "1";
+        <a class="game-button" href="https://www.scad.mx/arc-tetris">
+          Jugar
+        </a>
+      </article>
 
-  document.querySelectorAll('[data-game="acceso"]').forEach((button) => {
-    if (arcadeSesionActiva) {
-      button.textContent = "Cerrar sesión";
-      button.setAttribute("href", ARC_LINKS.logout);
-      button.setAttribute("data-session-action", "logout");
-    } else {
-      button.textContent = "Iniciar sesión";
-      button.setAttribute("href", ARC_LINKS.acceso);
-      button.setAttribute("data-session-action", "login");
-    }
-  });
+      <article class="game-card game-damas">
+        <div class="game-glow"></div>
 
-  actualizarBloqueoModulosPorSesion();
-}
+        <div class="game-icon">◼</div>
 
-function actualizarBloqueoModulosPorSesion() {
-  ARC_MODULOS_REQUIEREN_SESION.forEach((game) => {
-    document.querySelectorAll(`[data-game="${game}"]`).forEach((element) => {
-      aplicarEstadoModulo(element, game);
-    });
-  });
+        <div class="game-content">
+          <span class="game-label">Tablero / estrategia</span>
+          <h2>Damas</h2>
+          <p>Movimiento táctico y captura en tablero clásico.</p>
+        </div>
 
-  document.querySelectorAll("a").forEach((link) => {
-    const href = normalizarUrl(link.getAttribute("href"));
+        <a class="game-button" href="https://www.scad.mx/arc-damas">
+          Jugar
+        </a>
+      </article>
+    </section>
 
-    if (
-      href === normalizarUrl(ARC_LINKS.tetris) ||
-      href === normalizarUrl(ARC_LINKS.damas) ||
-      href === normalizarUrl(ARC_LINKS.fb)
-    ) {
-      aplicarEstadoModulo(link);
-    }
-  });
-}
+    <footer class="arcade-footer">
+      Powered by SCaD
+    </footer>
+  </main>
 
-function aplicarEstadoModulo(element, game) {
-  const url = game ? ARC_LINKS[game] : element.dataset.arcUrlOriginal;
+  <div id="installHelp" class="install-help hidden" role="dialog" aria-modal="true">
+    <div class="install-help-card">
+      <h2>Instalar ARCADE</h2>
+      <p id="installHelpText">
+        Para instalar ARCADE, abre las opciones del navegador y selecciona “Agregar a pantalla de inicio”.
+      </p>
+      <button id="btnCloseInstallHelp" type="button">
+        Entendido
+      </button>
+    </div>
+  </div>
 
-  if (!element.dataset.arcUrlOriginal) {
-    const hrefActual = element.getAttribute("href");
-    if (hrefActual) {
-      element.dataset.arcUrlOriginal = hrefActual;
-    }
-  }
-
-  if (arcadeSesionActiva) {
-    element.classList.remove("arc-disabled");
-    element.removeAttribute("aria-disabled");
-    element.removeAttribute("tabindex");
-    element.style.opacity = "";
-    element.style.filter = "";
-    element.style.cursor = "";
-    element.style.pointerEvents = "";
-
-    const hrefRestaurado = url || element.dataset.arcUrlOriginal;
-
-    if (hrefRestaurado) {
-      element.setAttribute("href", hrefRestaurado);
-    }
-
-    return;
-  }
-
-  element.classList.add("arc-disabled");
-  element.setAttribute("aria-disabled", "true");
-  element.setAttribute("tabindex", "-1");
-  element.removeAttribute("href");
-
-  element.style.opacity = "0.38";
-  element.style.filter = "grayscale(1)";
-  element.style.cursor = "not-allowed";
-}
-
-function configurarBloqueoClickArcade() {
-  document.addEventListener(
-    "click",
-    (event) => {
-      if (arcadeSesionActiva) return;
-
-      const accesoModulo = event.target.closest(
-        '[data-game="tetris"], [data-game="damas"], [data-game="fb"], a'
-      );
-
-      if (!accesoModulo) return;
-
-      const game = accesoModulo.dataset.game;
-      const href = normalizarUrl(
-        accesoModulo.getAttribute("href") || accesoModulo.dataset.arcUrlOriginal
-      );
-
-      const esModuloBloqueado =
-        ARC_MODULOS_REQUIEREN_SESION.includes(game) ||
-        href === normalizarUrl(ARC_LINKS.tetris) ||
-        href === normalizarUrl(ARC_LINKS.damas) ||
-        href === normalizarUrl(ARC_LINKS.fb);
-
-      if (!esModuloBloqueado) return;
-
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-    },
-    true
-  );
-}
-
-function normalizarUrl(url) {
-  if (!url) return "";
-
-  try {
-    return new URL(url, window.location.origin).href.replace(/\/$/, "");
-  } catch (err) {
-    return String(url).replace(/\/$/, "");
-  }
-}
-
-function limpiarParametrosUrl() {
-  const cleanUrl = `${window.location.origin}${window.location.pathname}`;
-  window.history.replaceState({}, document.title, cleanUrl);
-}
-
-function registrarServiceWorker() {
-  if (!("serviceWorker" in navigator)) return;
-
-  navigator.serviceWorker.register("service-worker.js").catch(() => {});
-}
-
-function configurarInstalacionArcade() {
-  const btnInstall = document.getElementById("btnInstallArcade");
-  const installStatus = document.getElementById("installStatus");
-  const installHelp = document.getElementById("installHelp");
-  const installHelpText = document.getElementById("installHelpText");
-  const btnCloseInstallHelp = document.getElementById("btnCloseInstallHelp");
-
-  if (!btnInstall || !installStatus || !installHelp || !installHelpText || !btnCloseInstallHelp) {
-    return;
-  }
-
-  if (estaInstalada()) {
-    mostrarEstadoInstalada(btnInstall, installStatus);
-    return;
-  }
-
-  if (esIOS()) {
-    btnInstall.hidden = false;
-  }
-
-  window.addEventListener("beforeinstallprompt", (event) => {
-    event.preventDefault();
-    deferredInstallPrompt = event;
-    btnInstall.hidden = false;
-  });
-
-  window.addEventListener("appinstalled", () => {
-    deferredInstallPrompt = null;
-    mostrarEstadoInstalada(btnInstall, installStatus);
-  });
-
-  btnInstall.addEventListener("click", async () => {
-    if (estaInstalada()) {
-      mostrarEstadoInstalada(btnInstall, installStatus);
-      return;
-    }
-
-    if (deferredInstallPrompt) {
-      deferredInstallPrompt.prompt();
-
-      try {
-        await deferredInstallPrompt.userChoice;
-      } catch (err) {}
-
-      deferredInstallPrompt = null;
-      return;
-    }
-
-    mostrarAyudaInstalacion(installHelp, installHelpText);
-  });
-
-  btnCloseInstallHelp.addEventListener("click", () => {
-    installHelp.classList.add("hidden");
-  });
-}
-
-function estaInstalada() {
-  return (
-    window.matchMedia("(display-mode: standalone)").matches ||
-    window.navigator.standalone === true
-  );
-}
-
-function esIOS() {
-  const ua = window.navigator.userAgent.toLowerCase();
-  const isiPhoneOrIPad = /iphone|ipad|ipod/.test(ua);
-  const isMacTouch = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
-
-  return isiPhoneOrIPad || isMacTouch;
-}
-
-function mostrarEstadoInstalada(btnInstall, installStatus) {
-  btnInstall.hidden = true;
-  installStatus.hidden = false;
-}
-
-function mostrarAyudaInstalacion(installHelp, installHelpText) {
-  if (esIOS()) {
-    installHelpText.textContent =
-      "En iPhone: toca Compartir y selecciona “Agregar a pantalla de inicio”.";
-  } else {
-    installHelpText.textContent =
-      "Abre las opciones del navegador y selecciona “Instalar app” o “Agregar a pantalla de inicio”.";
-  }
-
-  installHelp.classList.remove("hidden");
-}
+  <script src="app.js?v=151"></script>
+</body>
+</html>
