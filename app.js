@@ -1,6 +1,8 @@
 // ARCADE / App
-// Versión técnica: v1.4.4
-// Alcance: links de juegos + bloqueo por sesión + estado visual login/logout + instalación PWA
+// Versión técnica: v1.5.2
+// Alcance: links de juegos + bloqueo real por sesión + estado visual login/logout + instalación PWA
+
+const ARC_VERSION_VISIBLE = "v.1.5.2";
 
 const ARC_LINKS = {
   tetris: "https://www.scad.mx/arc-tetris",
@@ -13,13 +15,22 @@ const ARC_LINKS = {
 const ARC_MODULOS_REQUIEREN_SESION = ["tetris", "damas", "fb"];
 
 let deferredInstallPrompt = null;
+let arcadeSesionActiva = false;
 
 document.addEventListener("DOMContentLoaded", () => {
+  actualizarVersionVisibleArcade();
   configurarLinksArcade();
   actualizarEstadoSesionArcade();
+  configurarBloqueoClickArcade();
   configurarInstalacionArcade();
   registrarServiceWorker();
 });
+
+function actualizarVersionVisibleArcade() {
+  document.querySelectorAll(".arcade-version").forEach((version) => {
+    version.textContent = ARC_VERSION_VISIBLE;
+  });
+}
 
 function configurarLinksArcade() {
   document.querySelectorAll("[data-game]").forEach((button) => {
@@ -47,10 +58,10 @@ function actualizarEstadoSesionArcade() {
     limpiarParametrosUrl();
   }
 
-  const sesionActiva = localStorage.getItem("arcadeSesionActiva") === "1";
+  arcadeSesionActiva = localStorage.getItem("arcadeSesionActiva") === "1";
 
   document.querySelectorAll('[data-game="acceso"]').forEach((button) => {
-    if (sesionActiva) {
+    if (arcadeSesionActiva) {
       button.textContent = "Cerrar sesión";
       button.setAttribute("href", ARC_LINKS.logout);
       button.setAttribute("data-session-action", "logout");
@@ -61,38 +72,109 @@ function actualizarEstadoSesionArcade() {
     }
   });
 
-  actualizarBloqueoModulosPorSesion(sesionActiva);
+  actualizarBloqueoModulosPorSesion();
 }
 
-function actualizarBloqueoModulosPorSesion(sesionActiva) {
+function actualizarBloqueoModulosPorSesion() {
   ARC_MODULOS_REQUIEREN_SESION.forEach((game) => {
-    document.querySelectorAll(`[data-game="${game}"]`).forEach((button) => {
-      if (sesionActiva) {
-        button.classList.remove("arc-disabled");
-        button.removeAttribute("aria-disabled");
-        button.removeAttribute("tabindex");
-
-        if (ARC_LINKS[game]) {
-          button.setAttribute("href", ARC_LINKS[game]);
-        }
-      } else {
-        button.classList.add("arc-disabled");
-        button.setAttribute("aria-disabled", "true");
-        button.setAttribute("tabindex", "-1");
-        button.removeAttribute("href");
-      }
+    document.querySelectorAll(`[data-game="${game}"]`).forEach((element) => {
+      aplicarEstadoModulo(element, game);
     });
+  });
+
+  document.querySelectorAll("a").forEach((link) => {
+    const href = normalizarUrl(link.getAttribute("href"));
+
+    if (
+      href === normalizarUrl(ARC_LINKS.tetris) ||
+      href === normalizarUrl(ARC_LINKS.damas) ||
+      href === normalizarUrl(ARC_LINKS.fb)
+    ) {
+      aplicarEstadoModulo(link);
+    }
   });
 }
 
-document.addEventListener("click", (event) => {
-  const blockedButton = event.target.closest(".arc-disabled");
+function aplicarEstadoModulo(element, game) {
+  const url = game ? ARC_LINKS[game] : element.dataset.arcUrlOriginal;
 
-  if (blockedButton) {
-    event.preventDefault();
-    event.stopPropagation();
+  if (!element.dataset.arcUrlOriginal) {
+    const hrefActual = element.getAttribute("href");
+    if (hrefActual) {
+      element.dataset.arcUrlOriginal = hrefActual;
+    }
   }
-});
+
+  if (arcadeSesionActiva) {
+    element.classList.remove("arc-disabled");
+    element.removeAttribute("aria-disabled");
+    element.removeAttribute("tabindex");
+    element.style.opacity = "";
+    element.style.filter = "";
+    element.style.cursor = "";
+    element.style.pointerEvents = "";
+
+    const hrefRestaurado = url || element.dataset.arcUrlOriginal;
+
+    if (hrefRestaurado) {
+      element.setAttribute("href", hrefRestaurado);
+    }
+
+    return;
+  }
+
+  element.classList.add("arc-disabled");
+  element.setAttribute("aria-disabled", "true");
+  element.setAttribute("tabindex", "-1");
+  element.removeAttribute("href");
+
+  element.style.opacity = "0.38";
+  element.style.filter = "grayscale(1)";
+  element.style.cursor = "not-allowed";
+}
+
+function configurarBloqueoClickArcade() {
+  document.addEventListener(
+    "click",
+    (event) => {
+      if (arcadeSesionActiva) return;
+
+      const accesoModulo = event.target.closest(
+        '[data-game="tetris"], [data-game="damas"], [data-game="fb"], a'
+      );
+
+      if (!accesoModulo) return;
+
+      const game = accesoModulo.dataset.game;
+      const href = normalizarUrl(
+        accesoModulo.getAttribute("href") || accesoModulo.dataset.arcUrlOriginal
+      );
+
+      const esModuloBloqueado =
+        ARC_MODULOS_REQUIEREN_SESION.includes(game) ||
+        href === normalizarUrl(ARC_LINKS.tetris) ||
+        href === normalizarUrl(ARC_LINKS.damas) ||
+        href === normalizarUrl(ARC_LINKS.fb);
+
+      if (!esModuloBloqueado) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    },
+    true
+  );
+}
+
+function normalizarUrl(url) {
+  if (!url) return "";
+
+  try {
+    return new URL(url, window.location.origin).href.replace(/\/$/, "");
+  } catch (err) {
+    return String(url).replace(/\/$/, "");
+  }
+}
 
 function limpiarParametrosUrl() {
   const cleanUrl = `${window.location.origin}${window.location.pathname}`;
