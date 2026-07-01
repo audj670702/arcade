@@ -1,8 +1,8 @@
 // ARCADE / App
-// Versión técnica: v1.5.2
-// Alcance: links de juegos + bloqueo real por sesión + estado visual login/logout + instalación PWA
+// Versión técnica: v1.5.3
+// Alcance: Colores + bloqueo por sesión + versión visible + estado login/logout + instalación PWA
 
-const ARC_VERSION_VISIBLE = "v.1.5.2";
+const ARC_VERSION_VISIBLE = "v.1.5.3";
 
 const ARC_LINKS = {
   tetris: "https://www.scad.mx/arc-tetris",
@@ -19,6 +19,7 @@ let arcadeSesionActiva = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   actualizarVersionVisibleArcade();
+  actualizarTarjetaColoresArcade();
   configurarLinksArcade();
   actualizarEstadoSesionArcade();
   configurarBloqueoClickArcade();
@@ -29,6 +30,25 @@ document.addEventListener("DOMContentLoaded", () => {
 function actualizarVersionVisibleArcade() {
   document.querySelectorAll(".arcade-version").forEach((version) => {
     version.textContent = ARC_VERSION_VISIBLE;
+  });
+}
+
+function actualizarTarjetaColoresArcade() {
+  document.querySelectorAll('[data-game="damas"]').forEach((card) => {
+    card.setAttribute("aria-label", "Colores");
+    card.setAttribute("title", "Colores");
+
+    card.querySelectorAll("*").forEach((element) => {
+      const texto = element.textContent.trim().toUpperCase();
+
+      if (texto === "DAMAS") {
+        element.textContent = "Colores";
+      }
+    });
+
+    if (card.childNodes.length === 1 && card.textContent.trim().toUpperCase() === "DAMAS") {
+      card.textContent = "Colores";
+    }
   });
 }
 
@@ -96,10 +116,9 @@ function actualizarBloqueoModulosPorSesion() {
 }
 
 function aplicarEstadoModulo(element, game) {
-  const url = game ? ARC_LINKS[game] : element.dataset.arcUrlOriginal;
-
   if (!element.dataset.arcUrlOriginal) {
     const hrefActual = element.getAttribute("href");
+
     if (hrefActual) {
       element.dataset.arcUrlOriginal = hrefActual;
     }
@@ -114,7 +133,7 @@ function aplicarEstadoModulo(element, game) {
     element.style.cursor = "";
     element.style.pointerEvents = "";
 
-    const hrefRestaurado = url || element.dataset.arcUrlOriginal;
+    const hrefRestaurado = game ? ARC_LINKS[game] : element.dataset.arcUrlOriginal;
 
     if (hrefRestaurado) {
       element.setAttribute("href", hrefRestaurado);
