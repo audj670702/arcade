@@ -2,7 +2,7 @@
 // Versión técnica: v1.5.3
 // Alcance: Colores + bloqueo por sesión + versión visible + estado login/logout + instalación PWA
 
-const ARC_VERSION_VISIBLE = "v.1.5.3";
+const ARC_VERSION_VISIBLE = "v.1.5.4";
 
 const ARC_LINKS = {
   tetris: "https://www.scad.mx/arc-tetris",
