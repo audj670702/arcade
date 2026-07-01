@@ -6,7 +6,7 @@
 
   <title>ARCADE | SCaD</title>
 
-  <link rel="stylesheet" href="styles.css?v=15" />
+  <link rel="stylesheet" href="styles.css?v=154" />
   <link rel="manifest" href="manifest.json" />
 
   <meta name="theme-color" content="#020617" />
@@ -33,7 +33,12 @@
           App instalada
         </span>
 
-        <a class="fb-mini-access" href="https://www.scad.mx/arc-fb" aria-label="Facebook ARCADE">
+        <a
+          class="fb-mini-access"
+          href="https://www.scad.mx/arc-fb"
+          data-game="fb"
+          aria-label="Facebook ARCADE"
+        >
           f
         </a>
 
@@ -44,7 +49,7 @@
     </header>
 
     <section class="game-grid" aria-label="Juegos disponibles">
-      <article class="game-card game-tetris">
+      <article class="game-card game-tetris" data-game="tetris">
         <div class="game-glow"></div>
 
         <div class="game-icon">▦</div>
@@ -55,23 +60,23 @@
           <p>Velocidad, líneas y precisión en modo clásico.</p>
         </div>
 
-        <a class="game-button" href="https://www.scad.mx/arc-tetris">
+        <a class="game-button" href="https://www.scad.mx/arc-tetris" data-game="tetris">
           Jugar
         </a>
       </article>
 
-      <article class="game-card game-damas">
+      <article class="game-card game-colores" data-game="damas">
         <div class="game-glow"></div>
 
         <div class="game-icon">◼</div>
 
         <div class="game-content">
-          <span class="game-label">Tablero / estrategia</span>
-          <h2>Damas</h2>
-          <p>Movimiento táctico y captura en tablero clásico.</p>
+          <span class="game-label">Color / reflejos</span>
+          <h2>Colores</h2>
+          <p>Identifica colores y responde con precisión.</p>
         </div>
 
-        <a class="game-button" href="https://www.scad.mx/arc-damas">
+        <a class="game-button" href="https://www.scad.mx/arc-colores" data-game="damas">
           Jugar
         </a>
       </article>
@@ -94,6 +99,6 @@
     </div>
   </div>
 
-  <script src="app.js?v=151"></script>
+  <script src="app.js?v=154"></script>
 </body>
 </html>
